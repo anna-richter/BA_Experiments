@@ -5,7 +5,7 @@
     "data": "keywords",
     # preprocessing can be no, stopwords, vocabulary
     "preprocessing": "no"
-    # model can be Fasttext, GloVe, Word2Vec, BERT, RoBERTA, ALBERT
+    # model can be Fasttext, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
     "model": "Fasttext",
     # distance measure can be cosine or euclidian
     "distance_measure": "cosine",

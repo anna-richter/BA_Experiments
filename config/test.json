@@ -3,7 +3,7 @@
   "save_path": "./this/is/a/test.csv",
   "data": "keywords",
   "preprocessing": "no",
-  "model": "Fasttext",
+  "model": "GloVe",
   "distance_measure": "cosine",
   "layers": "1"
 

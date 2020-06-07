@@ -1,8 +1,8 @@
 # this class defines the experimental flow, which methods need to be called in which order etc
 class Experimentor:
-    def __init__(self, writer):
+    def __init__(self, writer, data):
         self.writer = writer
-        self.
+        self.data = data
         print("i was born")
 
     def run_experiment(self):
