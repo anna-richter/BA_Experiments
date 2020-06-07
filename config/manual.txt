@@ -1,0 +1,15 @@
+{
+    "writer": "CSVwriter",
+    "save_path": "./this/is/a/test.csv",
+    # data can be keywords or comments
+    "data": "keywords",
+    # preprocessing can be no, stopwords, vocabulary
+    "preprocessing": "no"
+    # model can be Fasttext, GloVe, Word2Vec, BERT, RoBERTA, ALBERT
+    "model": "Fasttext",
+    # distance measure can be cosine or euclidian
+    "distance_measure": "cosine",
+    # layers only apply to BERT (etc?) and can be 1-12, concat, pooling, etc.
+    "layers": "1"
+
+}

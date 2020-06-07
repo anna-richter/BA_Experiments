@@ -1,0 +1,10 @@
+{
+  "writer": "CSVwriter",
+  "save_path": "./this/is/a/test.csv",
+  "data": "keywords",
+  "preprocessing": "no",
+  "model": "Fasttext",
+  "distance_measure": "cosine",
+  "layers": "1"
+
+}
