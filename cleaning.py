@@ -41,7 +41,9 @@ class Cleaner:
             if not os.path.exists(os.path.dirname(self.path)):
                 os.makedirs(os.path.dirname(self.path))
             for operation in self.cleaningsteps:
-                self.data = operation(self.data)
+                for topic in self.data.columns:
+                    self.data[topic].dropna(inplace= True)
+                    self.data[topic] = operation(self.data[topic])
             cleaned_data = self.data
             cleaned_data.to_csv(self.path)
 
@@ -71,14 +73,14 @@ def basic(txt):
     cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
     cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_anonymized(x))
-    w_tokenizer = WhitespaceTokenizer()
-    cleanedTxt = cleanedTxt.apply(lambda x: w_tokenizer.tokenize(x))
+    #w_tokenizer = WhitespaceTokenizer()
+    #cleanedTxt = cleanedTxt.apply(lambda x: w_tokenizer.tokenize(x))
     return cleanedTxt
 
 def stopwords(txt):
-    cleanedTxt = cleanedTxt.apply(lambda x: remove_stopwords(x))
+    cleanedTxt = txt.apply(lambda x: remove_stopwords(x))
     return cleanedTxt
 
 def vocab(txt):
-    cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x))
+    cleanedTxt = txt.apply(lambda x: restrict_vocab(x))
     return cleanedTxt
