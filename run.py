@@ -42,6 +42,6 @@ if __name__ == "__main__":
     model = get_model(config["model"])
     cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]))
     cleandata = cleaner.clean_data()
-    print(cleandata)
+    
     experimentor = Experimentor(writer, data)
     experimentor.run_experiment()
