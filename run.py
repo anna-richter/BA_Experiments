@@ -7,6 +7,7 @@ import argparse
 import pandas as pd
 import models
 import writers
+from cleaning import Cleaner
 
 # converts string (name of writer) to actual writer object
 def get_writer(writer_name: str, **kwargs) -> Abstractwriter:
@@ -17,6 +18,7 @@ def get_data(data_name: str, **kwargs) -> pd.DataFrame:
 
 def get_model(model_name: str, **kwargs) -> object:
     return getattr(models, model_name)()
+
 
 # here the actual run starts, we need to make sure that this is actually the current "main method"
 if __name__ == "__main__":
@@ -34,5 +36,7 @@ if __name__ == "__main__":
     writer = writer_class(config['save_path'])
     data = get_data(config["data"])
     model = get_model(config["model"])
+    cleandata = Cleaner(config["data"], data, config["cleaning"])
+    cleandata.clean_data()
     experimentor = Experimentor(writer, data)
     experimentor.run_experiment()

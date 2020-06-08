@@ -1,5 +1,8 @@
 import gensim.downloader as api
 
+def test():
+    return "test_model"
+
 def Fasttext():
     model = api.load("fasttext-wiki-news-subwords-300")
     return model
