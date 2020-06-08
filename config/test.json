@@ -2,7 +2,7 @@
   "writer": "CSVwriter",
   "save_path": "./this/is/a/test.csv",
   "data": "keywords",
-  "cleaning": "[basic]",
+  "cleaning": ["basic"],
   "model": "test",
   "distance_measure": "cosine",
   "layers": "1"

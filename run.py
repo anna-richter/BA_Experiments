@@ -7,6 +7,7 @@ import argparse
 import pandas as pd
 import models
 import writers
+import cleaning
 from cleaning import Cleaner
 
 # converts string (name of writer) to actual writer object
@@ -18,6 +19,9 @@ def get_data(data_name: str, **kwargs) -> pd.DataFrame:
 
 def get_model(model_name: str, **kwargs) -> object:
     return getattr(models, model_name)()
+
+def get_cleaners(cleaner_names: list) -> callable:
+    return [getattr(cleaning, name) for name in cleaner_names]
 
 
 # here the actual run starts, we need to make sure that this is actually the current "main method"
@@ -36,7 +40,8 @@ if __name__ == "__main__":
     writer = writer_class(config['save_path'])
     data = get_data(config["data"])
     model = get_model(config["model"])
-    cleandata = Cleaner(config["data"], data, config["cleaning"])
-    cleandata.clean_data()
+    cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]))
+    cleandata = cleaner.clean_data()
+    print(cleandata)
     experimentor = Experimentor(writer, data)
     experimentor.run_experiment()

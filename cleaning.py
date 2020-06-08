@@ -30,13 +30,24 @@ class Cleaner:
         self.cleaningsteps = cleaningsteps
         self.path = f"./cleandata/{data_name}"
         for item in cleaningsteps:
-            self.path += '_' + item
+            self.path += '_' + item.__name__
+        self.path += ".csv"
 
     def clean_data(self):
-        if not os.path.exists(os.path.dirname(self.path)):
-            os.makedirs(os.path.dirname(self.path))
-        #for step in self.cleaningsteps:
-         #   step(self.data)
+        if os.path.exists(self.path):
+            cleaned_data = pd.read_csv(self.path)
+
+        else:
+            if not os.path.exists(os.path.dirname(self.path)):
+                os.makedirs(os.path.dirname(self.path))
+            for operation in self.cleaningsteps:
+                self.data = operation(self.data)
+            cleaned_data = self.data
+            cleaned_data.to_csv(self.path)
+
+        return cleaned_data
+
+
 
 def remove_html(txt):
     '''Remove HTML'''
@@ -55,44 +66,19 @@ def restrict_vocab(surveyText):
 def remove_anonymized(surveyText):
     return [w for w in surveyText if w != "anonymized"]
 
-def preprocessing(txt, punctuation=False, tokenize=False, stopwords=False, vocab=False,
-                  anonymized=False, specialCharacter=False, numbers=False, singleChar=False):
-
-    cleanedTxt = txt.apply(lambda x: remove_html(x))
-
-    if punctuation:
-        cleanedTxt = cleanedTxt.apply(lambda x: remove_punctuation(x))
-
-    if tokenize:
-        cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
-
-    if stopwords:
-        cleanedTxt = cleanedTxt.apply(lambda x: remove_stopwords(x))
-
-    if anonymized:
-        cleanedTxt = cleanedTxt.apply(lambda x: remove_anonymized(x))
-
-    # if vocab:
-    #   cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x))
-
-    if specialCharacter:
-        '''Replacing Special Characters with space'''
-        cleanedTxt = cleanedTxt.apply(lambda x: re.sub(r'[^a-zA-Z0-9]', ' ', str(x)))
-
-    if numbers:
-        '''Replacing Numbers with space'''
-        cleanedTxt = cleanedTxt.apply(lambda x: re.sub(r'[^a-zA-Z]', ' ', x))
-
-    if singleChar:
-        '''Removing words whom length is one'''
-        cleanedTxt = cleanedTxt.apply(lambda x: ' '.join([w for w in x.split() if len(w) > 1]))
-
+def basic(txt):
+    #cleanedTxt = txt.apply(lambda x: remove_html(x))
+    cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
+    cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
+    cleanedTxt = cleanedTxt.apply(lambda x: remove_anonymized(x))
     w_tokenizer = WhitespaceTokenizer()
     cleanedTxt = cleanedTxt.apply(lambda x: w_tokenizer.tokenize(x))
+    return cleanedTxt
 
-    if vocab:
-        cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x))
-    # for i in range(len(cleanedTxt)):
-    #   cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
+def stopwords(txt):
+    cleanedTxt = cleanedTxt.apply(lambda x: remove_stopwords(x))
+    return cleanedTxt
 
+def vocab(txt):
+    cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x))
     return cleanedTxt
