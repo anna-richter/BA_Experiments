@@ -35,7 +35,7 @@ class Cleaner:
 
     def clean_data(self):
         if os.path.exists(self.path):
-            cleaned_data = pd.read_csv(self.path)
+            cleaned_data = pd.read_csv(self.path,index_col= 0)
 
         else:
             if not os.path.exists(os.path.dirname(self.path)):

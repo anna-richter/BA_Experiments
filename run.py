@@ -9,6 +9,8 @@ import models
 import writers
 import cleaning
 from cleaning import Cleaner
+import formatting
+from formatting import Formatter
 
 # converts string (name of writer) to actual writer object
 def get_writer(writer_name: str, **kwargs) -> Abstractwriter:
@@ -42,6 +44,7 @@ if __name__ == "__main__":
     model = get_model(config["model"])
     cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]))
     cleandata = cleaner.clean_data()
-    
+    formatter = Formatter(config["model"], cleandata)
+    print(formatter.format_data())
     experimentor = Experimentor(writer, data)
     experimentor.run_experiment()
