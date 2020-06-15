@@ -7,6 +7,7 @@ from scipy.spatial.distance import cosine
 from scipy.spatial.distance import cdist
 # Load pre-trained model tokenizer (vocabulary)
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+from nltk.tokenize.treebank import TreebankWordDetokenizer
 
 
 class Formatter:
@@ -15,17 +16,21 @@ class Formatter:
         self.data = data
 
     def format_data(self):
-        if self.model_name == "Fasttext" or "Word2Vec" or "GloVe":
+        if self.model_name in ["Fasttext", "Word2Vec" ,"GloVe"]:
             return word_embedding_formatting(self.data)
-        if self.model_name == "BERT":
+        elif self.model_name == "test":
             return sentence_embedding_formatting(self.data)
+        else:
+            print("fehler duh")
 
 
 def word_embedding_formatting(data):
     for topic in data.columns:
         data[topic].dropna(inplace=True)
         for comment in range(len(data[topic])):
-            data[topic][comment] = list(data[topic][comment])
+            #data[topic][comment] = list(data[topic][comment])
+            pass
+
     return data
 
 def sentence_embedding_formatting(data):
@@ -48,7 +53,7 @@ def sentence_embedding_formatting(data):
             three = segments(two)
             token_tensor, segment_tensors = convert_to_torch(two, three)
 
-        return (token_tensor,segment_tensors)
+    return (token_tensor,segment_tensors)
 
 def mark_and_tokenize(comment):
     marked = "[CLS] " + comment + " [SEP]"

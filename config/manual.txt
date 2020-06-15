@@ -7,8 +7,8 @@
     "cleaning": "[basic]"
     # model can be Fasttext, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
     "model": "Fasttext",
-    # distance measure can be cosine or euclidian
-    "distance_measure": "cosine",
+    # experiment_mode can be "mean_of_list" or "mean_of_mean"
+    "experiment_mode": "mean_of_list",
     # layers only apply to BERT (etc?) and can be 1-12, concat, pooling, etc.
     "layers": "1"
 

@@ -1,10 +1,10 @@
 {
   "writer": "CSVwriter",
-  "save_path": "./this/is/a/test.csv",
+  "save_path": "./comments/basic/Word2Vec.csv",
   "data": "comments",
-  "cleaning": ["basic", "stopwords"],
-  "model": "test",
-  "distance_measure": "cosine",
+  "cleaning": ["basic"],
+  "model": "Word2Vec",
+  "experiment_mode": "cosine",
   "layers": "1"
 
 }

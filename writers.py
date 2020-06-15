@@ -40,6 +40,9 @@ class CSVwriter(Abstractwriter):
         else:
             self.results[name] = [value]
 
+    def write_list(self, result: list):
+        self.results = result
+
     def save(self):
         # we check if path exists, if not make path
         if not os.path.exists(os.path.dirname(self.path)):
