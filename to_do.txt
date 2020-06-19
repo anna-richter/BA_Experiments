@@ -1,0 +1,21 @@
+vocabulary cleaning so einbauen dass es für den jeweiligen Algorithmus das tut:
+    noch eine if bedingung: falls vocab in [cleaningsteps] ist dann das geladenen model durch vocab laufen
+    lassen...
+    Problem: Laufzeit Effizienz? Listen mit den jeweils auszuschließenden Worten erstellen (für keywords und
+    comments zsm) dann genauso wie stopwords entfernen
+    also dict mit den listen von zu removendem vocab
+    -> so kann ich leicht berechnen wieviele worte durch preprocessing entfernt wurden! einfach len(stopwords)
+    + len(out_of_vocab)
+    Sollte ich sonst die fertigen datensätze vom model abhängig abspeichern?
+
+word_embeddings mit stopwords laufen lassen
+
+word_embeddings mit vocabulary cleaning laufen lassen
+
+code überall kommentieren
+
+BERT funktionalität einbauen!!
+Roberta und Albert auch
+
+Ergebnisse auswerten
+
