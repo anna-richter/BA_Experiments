@@ -5,7 +5,7 @@ def keywords():
         "C:/Users/Anna/Documents/GitHub/Bachelorarbeit/BA_Anna_ResultingComments/BA_Anna_ResultingComments.xlsx",
         sheet_name=0, index_col=0, usecols="A,B", skiprows=0)
     keywords = keywords.T
-    keywords.dropna(inplace=True)
+    #keywords.dropna(inplace=True)
     return keywords
 
 def comments():

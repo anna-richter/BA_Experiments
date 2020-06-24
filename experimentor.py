@@ -20,7 +20,7 @@ def word_embeddings_experiment(data, data_name, model, writer):
     if data_name == "keywords":
         keyword_titles = {}
         for topic in data.columns:
-            #print(data[topic].values[0].split(" "))
+            print(data[topic].values[0].split(" "))
             try:
                 zwischenergebnis = model.most_similar_cosmul(positive= data[topic].values[0].split(" "),
                                                          negative=None, topn=5)

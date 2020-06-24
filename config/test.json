@@ -1,9 +1,9 @@
 {
   "writer": "CSVwriter",
-  "save_path": "./comments/basic/Word2Vec.csv",
-  "data": "comments",
-  "cleaning": ["basic"],
-  "model": "Word2Vec",
+  "save_path": "./keywords/basic_stopwords/Fasttext.csv",
+  "data": "keywords",
+  "cleaning": ["basic", "stopwords"],
+  "model": "Fasttext",
   "experiment_mode": "cosine",
   "layers": "1"
 

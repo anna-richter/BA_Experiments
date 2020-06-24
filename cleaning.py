@@ -46,8 +46,8 @@ class Cleaner:
                     self.data[topic].dropna(inplace= True)
                     self.data[topic] = operation(self.data[topic], self.model_name)
             cleaned_data = self.data
-            cleaned_data.to_csv(self.path)
 
+            cleaned_data.to_csv(self.path)
         return cleaned_data
 
 
@@ -73,7 +73,7 @@ def remove_anonymized(surveyText):
 def remove_whitespace(surveyText):
     return [w for w in surveyText if w != " "]
 
-def basic(txt):
+def basic(txt, model_name):
     #cleanedTxt = txt.apply(lambda x: remove_html(x))
     cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
     cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
@@ -85,11 +85,18 @@ def basic(txt):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
     return cleanedTxt
 
-def stopwords(txt):
-    cleanedTxt = txt.apply(lambda x: remove_stopwords(x))
+def stopwords(txt, model_name):
+    print(txt)
+    cleanedTxt = txt.apply(lambda x: word_tokenize(x.lower()))
+    cleanedTxt = cleanedTxt.apply(lambda x: remove_stopwords(x))
+    cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
+    for i in range(len(cleanedTxt)):
+       cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
+    print(cleanedTxt)
     return cleanedTxt
 
-def vocab(txt):
+def vocab(txt, model_name):
+    print(txt)
     cleanedTxt = txt.apply(lambda x: restrict_vocab(x))
     return cleanedTxt
 
