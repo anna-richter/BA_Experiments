@@ -25,13 +25,17 @@ nltk.download('punkt')
 # check if the data was cleaned and saved under this configuration already, if not:
 # clean data and save it
 class Cleaner:
-    def __init__(self, data_name:str, data: pd.DataFrame, cleaningsteps: list, model_name:str):
+    def __init__(self, data_name:str, data: pd.DataFrame, cleaningsteps: list, model: object):
         self.data = data
+        self.clean_vocab = False
         self.cleaningsteps = cleaningsteps
-        self.model_name = model_name
+        self.model = model
         self.path = f"./cleandata/{data_name}"
         for item in cleaningsteps:
-            self.path += '_' + item.__name__
+            if item.__name__ == "vocab":
+                self.clean_vocab = True
+            else:
+                self.path += '_' + item.__name__
         self.path += ".csv"
 
     def clean_data(self):
@@ -44,10 +48,12 @@ class Cleaner:
             for operation in self.cleaningsteps:
                 for topic in self.data.columns:
                     self.data[topic].dropna(inplace= True)
-                    self.data[topic] = operation(self.data[topic], self.model_name)
+                    self.data[topic] = operation(self.data[topic])
             cleaned_data = self.data
 
             cleaned_data.to_csv(self.path)
+        if self.clean_vocab:
+            cleaned_data = remove_vocab(cleaned_data, self.model)
         return cleaned_data
 
 
@@ -63,9 +69,9 @@ def remove_punctuation(surveyText):
 def remove_stopwords(surveyText):
     return [w for w in surveyText if w not in stopwordList]
 
-def restrict_vocab(surveyText):
+def restrict_vocab(surveyText, vocabulary):
 
-    return [w for w in surveyText if w not in not_in_vocab]
+    return [w for w in surveyText if w in vocabulary]
 
 def remove_anonymized(surveyText):
     return [w for w in surveyText if w != "anonymized"]
@@ -73,7 +79,7 @@ def remove_anonymized(surveyText):
 def remove_whitespace(surveyText):
     return [w for w in surveyText if w != " "]
 
-def basic(txt, model_name):
+def basic(txt):
     #cleanedTxt = txt.apply(lambda x: remove_html(x))
     cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
     cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
@@ -85,19 +91,27 @@ def basic(txt, model_name):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
     return cleanedTxt
 
-def stopwords(txt, model_name):
-    print(txt)
+def stopwords(txt):
     cleanedTxt = txt.apply(lambda x: word_tokenize(x.lower()))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_stopwords(x))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
     for i in range(len(cleanedTxt)):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
-    print(cleanedTxt)
     return cleanedTxt
 
-def vocab(txt, model_name):
-    print(txt)
-    cleanedTxt = txt.apply(lambda x: restrict_vocab(x))
+# dummy function
+def vocab(txt):
+    return txt
+
+def remove_vocab(txt, model):
+    print(len(txt))
+    vocabulary= model.vocab
+    cleanedTxt = txt.apply(lambda x: word_tokenize(x.lower()))
+    cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x,vocabulary))
+    cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
+    for i in range(len(cleanedTxt)):
+       cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
+    print(len(cleanedTxt))
     return cleanedTxt
 
 

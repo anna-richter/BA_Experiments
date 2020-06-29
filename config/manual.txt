@@ -3,7 +3,7 @@
     "save_path": "./this/is/a/test.csv",
     # data can be keywords or comments
     "data": "keywords",
-    # cleaning can be basic, stopwords, vocabulary
+    # cleaning can be basic, stopwords, vocab
     "cleaning": "[basic, stopwords]"
     # model can be Fasttext, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
     "model": "Fasttext",

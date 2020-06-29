@@ -1,4 +1,5 @@
 import traceback
+from gensim.models import KeyedVectors
 # this class defines the experimental flow, which methods need to be called in which order etc
 class Experimentor:
     def __init__(self, model, model_name, data, data_name, writer):
@@ -20,10 +21,10 @@ def word_embeddings_experiment(data, data_name, model, writer):
     if data_name == "keywords":
         keyword_titles = {}
         for topic in data.columns:
-            print(data[topic].values[0].split(" "))
+            #print(data[topic].values[0].split(" "))
             try:
                 zwischenergebnis = model.most_similar_cosmul(positive= data[topic].values[0].split(" "),
-                                                         negative=None, topn=5)
+                                                             negative=None, topn=5)
                 keyword_titles[topic] = zwischenergebnis
             except KeyError as e:
                 # Ignore the word if it does not exist.

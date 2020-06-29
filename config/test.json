@@ -1,8 +1,8 @@
 {
   "writer": "CSVwriter",
-  "save_path": "./keywords/basic_stopwords/Fasttext.csv",
+  "save_path": "./keywords/basic_stopwords_vocab/Fasttext.csv",
   "data": "keywords",
-  "cleaning": ["basic", "stopwords"],
+  "cleaning": ["basic", "stopwords", "vocab"],
   "model": "Fasttext",
   "experiment_mode": "cosine",
   "layers": "1"
