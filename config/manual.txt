@@ -5,7 +5,7 @@
     "data": "keywords",
     # cleaning can be basic, stopwords, vocab
     "cleaning": "[basic, stopwords]"
-    # model can be Fasttext, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
+    # model can be Fasttext, Fasttext_gensim, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
     "model": "Fasttext",
     # experiment_mode can be "mean_of_list" or "mean_of_mean"
     "experiment_mode": "mean_of_list",

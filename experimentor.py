@@ -8,10 +8,9 @@ class Experimentor:
         self.data = data
         self.data_name = data_name
         self.writer = writer
-        print("i was born")
 
     def run_experiment(self):
-        if self.model_name in ["Fasttext", "Word2Vec" ,"GloVe"]:
+        if self.model_name in ["Fasttext", "Fasttext_gensim" "Word2Vec" ,"GloVe"]:
             titles = word_embeddings_experiment(self.data, self.data_name, self.model, self.writer)
             print(titles)
             self.writer.write_list(titles)

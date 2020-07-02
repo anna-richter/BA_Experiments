@@ -7,3 +7,4 @@ pytorch_pretrained_bert
 xlrd
 torch==1.5.1+cu101
 torchvision==0.6.1+cu101
+transformers
