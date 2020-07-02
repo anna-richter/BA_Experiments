@@ -1,9 +1,9 @@
 {
   "writer": "CSVwriter",
-  "save_path": "./keywords/basic_stopwords_vocab/Fasttext.csv",
-  "data": "keywords",
-  "cleaning": ["basic", "stopwords", "vocab"],
-  "model": "Fasttext",
+  "save_path": "./comments/basic/GloVe.csv",
+  "data": "comments",
+  "cleaning": ["basic"],
+  "model": "GloVe",
   "experiment_mode": "cosine",
   "layers": "1"
 

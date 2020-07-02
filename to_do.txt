@@ -19,3 +19,19 @@ Roberta und Albert auch
 
 Ergebnisse auswerten
 
+
+
+
+
+
+vocabulary cleaning so einbauen dass es für den jeweiligen Algorithmus das tut:
+    noch eine if bedingung: falls vocab in [cleaningsteps] ist dann das geladenen model durch vocab laufen
+    lassen...
+    Problem: Laufzeit Effizienz? Listen mit den jeweils auszuschließenden Worten erstellen (für keywords und
+    comments zsm) dann genauso wie stopwords entfernen
+    also dict mit den listen von zu removendem vocab
+    -> so kann ich leicht berechnen wieviele worte durch preprocessing entfernt wurden! einfach len(stopwords)
+    + len(out_of_vocab)
+    Sollte ich sonst die fertigen datensätze vom model abhängig abspeichern? DONE
+
+comments basic glove falsch, das war wohl word2vec, nochmal laufen lassen! DONE!!!

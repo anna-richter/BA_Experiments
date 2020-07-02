@@ -42,7 +42,7 @@ def word_embeddings_experiment(data, data_name, model, writer):
         for topic in data.columns:
             comment_titles[topic] = []
             for comment in range(len(data[topic])):
-                print(data[topic][comment].split(" "))
+                #print(data[topic][comment].split(" "))
                 try:
                     zwischenergebnis = model.most_similar_cosmul(positive= data[topic][comment].split(" "),
                                                          negative=None, topn=5)
@@ -50,7 +50,7 @@ def word_embeddings_experiment(data, data_name, model, writer):
                 except KeyError as e:
                 # Ignore the word if it does not exist.
                     print("fehler in " + topic)
-                    print(data[topic].values[0].split(" "))
+                    print(data[topic][comment].split(" "))
                     print(e)
                     pass
 

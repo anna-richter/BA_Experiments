@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     config_path = './config/test.json'
     config = json.load(open(config_path, 'r'))
-    print("hello world", config)
+    print("running configuration: ", config)
 
     # get the writer class from the name in config
     writer_class = get_writer(config['writer'])

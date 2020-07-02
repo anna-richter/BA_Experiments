@@ -50,10 +50,13 @@ class Cleaner:
                     self.data[topic].dropna(inplace= True)
                     self.data[topic] = operation(self.data[topic])
             cleaned_data = self.data
-
             cleaned_data.to_csv(self.path)
+
         if self.clean_vocab:
-            cleaned_data = remove_vocab(cleaned_data, self.model)
+            vocabulary = self.model.vocab
+            for topic in cleaned_data.columns:
+                cleaned_data[topic].dropna(inplace=True)
+                cleaned_data[topic] = remove_vocab(cleaned_data[topic], vocabulary)
         return cleaned_data
 
 
@@ -70,7 +73,9 @@ def remove_stopwords(surveyText):
     return [w for w in surveyText if w not in stopwordList]
 
 def restrict_vocab(surveyText, vocabulary):
-
+    for w in surveyText:
+        if w not in vocabulary:
+            print("excluded ", w)
     return [w for w in surveyText if w in vocabulary]
 
 def remove_anonymized(surveyText):
@@ -84,6 +89,7 @@ def basic(txt):
     cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
     cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_anonymized(x))
+    cleanedTxt = cleanedTxt.apply(lambda x: re.sub(r'[^a-zA-Z0-9]', ' ', str(x)))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
     #w_tokenizer = WhitespaceTokenizer()
     #cleanedTxt = cleanedTxt.apply(lambda x: w_tokenizer.tokenize(x))
@@ -103,15 +109,15 @@ def stopwords(txt):
 def vocab(txt):
     return txt
 
-def remove_vocab(txt, model):
-    print(len(txt))
-    vocabulary= model.vocab
+def remove_vocab(txt, vocabulary):
     cleanedTxt = txt.apply(lambda x: word_tokenize(x.lower()))
+    print(len(cleanedTxt))
     cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x,vocabulary))
+    print(len(cleanedTxt))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
     for i in range(len(cleanedTxt)):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
-    print(len(cleanedTxt))
+
     return cleanedTxt
 
 
