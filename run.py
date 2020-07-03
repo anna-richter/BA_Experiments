@@ -42,7 +42,7 @@ if __name__ == "__main__":
     writer = writer_class(config['save_path'])
     data = get_data(config["data"])
     model = get_model(config["model"])
-    cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]), model)
+    cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]), model, config["model"])
     cleandata = cleaner.clean_data()
 
     formatter = Formatter(config["model"], cleandata)

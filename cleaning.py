@@ -12,6 +12,8 @@ from nltk.tokenize import WhitespaceTokenizer
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
+from transformers import BertModel, BertTokenizer
 #from porter2stemmer import Porter2Stemmer
 import re
 import os
@@ -25,11 +27,12 @@ nltk.download('punkt')
 # check if the data was cleaned and saved under this configuration already, if not:
 # clean data and save it
 class Cleaner:
-    def __init__(self, data_name:str, data: pd.DataFrame, cleaningsteps: list, model: object):
+    def __init__(self, data_name:str, data: pd.DataFrame, cleaningsteps: list, model: object, model_name: str):
         self.data = data
         self.clean_vocab = False
         self.cleaningsteps = cleaningsteps
         self.model = model
+        self.model_name = model_name
         self.path = f"./cleandata/{data_name}"
         for item in cleaningsteps:
             if item.__name__ == "vocab":
@@ -53,7 +56,13 @@ class Cleaner:
             cleaned_data.to_csv(self.path)
 
         if self.clean_vocab:
-            vocabulary = self.model.vocab
+            if self.model_name in ["Fasttext", "Fasttext_gensim", "Word2Vec" ,"GloVe"]:
+                vocabulary = self.model.vocab
+            elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
+                tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+                # muss das hier list(..) sein??
+                vocabulary = tokenizer.vocab.keys()
+
             for topic in cleaned_data.columns:
                 cleaned_data[topic].dropna(inplace=True)
                 cleaned_data[topic] = remove_vocab(cleaned_data[topic], vocabulary)

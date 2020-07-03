@@ -16,8 +16,12 @@ class Formatter:
         self.data = data
 
     def format_data(self):
-        if self.model_name in ["Fasttext", "Word2Vec" ,"GloVe"]:
+        if self.model_name in ["Fasttext", "Fasttext_gensim" "Word2Vec" ,"GloVe"]:
             return word_embedding_formatting(self.data)
+
+        elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
+            return sentence_embedding_formatting(self.data)
+
         elif self.model_name == "test":
             return sentence_embedding_formatting(self.data)
         else:
