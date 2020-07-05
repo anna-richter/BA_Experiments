@@ -5,6 +5,7 @@ code überall kommentieren
 BERT funktionalität einbauen!!
 model
 cleaning: vocab teil
+get embeddings
 experimentor
 
 
