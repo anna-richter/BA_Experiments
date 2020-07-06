@@ -45,8 +45,6 @@ if __name__ == "__main__":
     cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]), model, config["model"])
     cleandata = cleaner.clean_data()
 
-    formatter = Formatter(config["model"], cleandata)
-    formatted_data = formatter.format_data()
-    experimentor = Experimentor(model, config["model"], formatted_data, config["data"], writer)
+    experimentor = Experimentor(model, config["model"], cleandata, config["data"], writer)
     experimentor.run_experiment()
     #print(cleandata)

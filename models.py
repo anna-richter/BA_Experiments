@@ -1,6 +1,8 @@
 import gensim.downloader as api
 from gensim.models import KeyedVectors
 from transformers import BertModel, BertTokenizer
+from transformers import AutoTokenizer, AutoModelWithLMHead
+from transformers import RobertaTokenizer, RobertaModel
 
 def test():
     return "test_model"
@@ -28,7 +30,9 @@ def BERT():
     return model
 
 def ROBERTA():
-    pass
+    model = RobertaModel.from_pretrained('roberta-base')
+    model.eval()
+    return model
 
 def ALBERT():
     pass

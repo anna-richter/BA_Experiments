@@ -1,9 +1,9 @@
 {
   "writer": "CSVwriter",
-  "save_path": "./comments/basic_stopwords_vocab/Fasttext.csv",
-  "data": "comments",
-  "cleaning": ["basic", "stopwords", "vocab"],
-  "model": "Fasttext",
+  "save_path": "./keywords/basic/ROBERTA.csv",
+  "data": "keywords",
+  "cleaning": ["basic"],
+  "model": "ROBERTA",
   "experiment_mode": "cosine",
   "layers": "1"
 

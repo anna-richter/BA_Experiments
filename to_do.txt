@@ -1,13 +1,6 @@
-word_embeddings mit vocabulary cleaning laufen lassen
+
 
 code überall kommentieren
-
-BERT funktionalität einbauen!!
-model
-cleaning: vocab teil
-get embeddings
-experimentor
-
 
 Roberta und Albert auch
 
@@ -16,7 +9,7 @@ Ergebnisse auswerten
 
 
 
-
+Erledigte Sachen:
 
 vocabulary cleaning so einbauen dass es für den jeweiligen Algorithmus das tut:
     noch eine if bedingung: falls vocab in [cleaningsteps] ist dann das geladenen model durch vocab laufen
@@ -29,3 +22,11 @@ vocabulary cleaning so einbauen dass es für den jeweiligen Algorithmus das tut:
     Sollte ich sonst die fertigen datensätze vom model abhängig abspeichern? DONE
 
 comments basic glove falsch, das war wohl word2vec, nochmal laufen lassen! DONE!!!
+
+BERT funktionalität einbauen!! Done
+model               Done
+cleaning: vocab teil     Done
+get embeddings      Done
+experimentor        Done
+
+word_embeddings mit vocabulary cleaning laufen lassen Done

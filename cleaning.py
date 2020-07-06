@@ -14,6 +14,8 @@ from nltk.stem.porter import PorterStemmer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
 from transformers import BertModel, BertTokenizer
+from transformers import RobertaTokenizer, RobertaModel
+from transformers import AutoTokenizer, AutoModelWithLMHead
 #from porter2stemmer import Porter2Stemmer
 import re
 import os
@@ -58,11 +60,13 @@ class Cleaner:
         if self.clean_vocab:
             if self.model_name in ["Fasttext", "Fasttext_gensim", "Word2Vec" ,"GloVe"]:
                 vocabulary = self.model.vocab
-            elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
+            elif self.model_name == "BERT":
                 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
                 # muss das hier list(..) sein??
                 vocabulary = tokenizer.vocab.keys()
-
+            elif self.model_name == "ROBERTA":
+                tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
+                vocabulary = tokenizer.vocab()
             for topic in cleaned_data.columns:
                 cleaned_data[topic].dropna(inplace=True)
                 cleaned_data[topic] = remove_vocab(cleaned_data[topic], vocabulary)

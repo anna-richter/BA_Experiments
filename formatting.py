@@ -8,7 +8,7 @@ from scipy.spatial.distance import cdist
 # Load pre-trained model tokenizer (vocabulary)
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 from nltk.tokenize.treebank import TreebankWordDetokenizer
-from bert_embeddings import Bert_embedder
+from bert_experiments import Bert_experimentor
 
 class Formatter:
     def __init__(self, model_name: str, data: pd.DataFrame):
@@ -38,5 +38,5 @@ def word_embedding_formatting(data):
     return data
 
 def sentence_embedding_formatting(data, model):
-    item = Bert_embedder(data, model)
+    item = Bert_experimentor(data, model)
     return item.get_bert_dict()
