@@ -36,6 +36,8 @@ if __name__ == "__main__":
     config = json.load(open(config_path, 'r'))
     print("running configuration: ", config)
 
+    # FORLOOP HERE
+
     # get the writer class from the name in config
     writer_class = get_writer(config['writer'])
     # make an instance of this writer with the path given in config

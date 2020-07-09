@@ -4,12 +4,12 @@
     # data can be keywords or comments
     "data": "keywords",
     # cleaning can be basic, stopwords, vocab
-    "cleaning": "[basic, stopwords]"
-    # model can be Fasttext, Fasttext_gensim, GloVe, Word2Vec, BERT, ROBERTA, ALBERT
+    "cleaning": ["basic", "stopwords"]
+    # model can be Fasttext, Fasttext_gensim, GloVe, Word2Vec, BERT
     "model": "Fasttext",
     # experiment_mode can be "mean_of_list" or "mean_of_mean"
     "experiment_mode": "mean_of_list",
-    # layers only apply to BERT (etc?) and can be 1-12, concat, pooling, etc.
+    # layers only apply to BERT (etc?) and can be 1-12, mean, max, sum
     "layers": "1"
 
 }

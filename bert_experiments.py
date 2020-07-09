@@ -42,25 +42,42 @@ class Bert_experimentor:
                     lookup_tokens.append(word)
                 ids = convert_to_ids(tokens, self.tokenizer)
                 token_tensor, segment_tensors = convert_to_torch(ids, segments(ids))
-
+                # get full embedding of Bert Model, embeddings has shape nr.of tokens x 13 x 768
                 embeddings = get_hidden_states(token_tensor, segment_tensors, self.model)
-                layer_embeddings = embeddings[:, int(self.layers)]
-                for tensor in layer_embeddings[1:-1]:
-                    lookup_embeddings.append(tensor.numpy())
-                
-                embeddings_l1 = layer_1_embeddings(embeddings)
-                for tensor in embeddings_l1[1:-1]:
-                    lookup_embeddings.append(tensor.numpy())
-                bert_dict[i][j]["emb_l1"] = embeddings_l1
-                #embeddings_cat = concatenate(embeddings)
-                #bert_dict[i][j]["emb_cat"] = embeddings_cat
-                # we add the embeddings to the look up table, but not the ones from CLS and SEP
-                #for tensor in embeddings_cat[1:-1]:
-                 #   lookup_embeddings.append(tensor.numpy())
-                embeddings_sum = summing(embeddings)
-                bert_dict[i][j]["emb_sum"] = embeddings_sum
-                sentence_embeddings = sentence_encoding(embeddings)
-                bert_dict[i][j]["emb_sen"] = sentence_embeddings
+                # if a certain layer was specified, get the embeddings of the layer
+                # shape should be (nr of tokens x 768)
+                if self.layers in ["1","2","3","4","5","6","7","8","9","10","11","12"]:
+                    layer_embeddings = embeddings[:, int(self.layers)]
+                    # add embeddings to lookup-embeddings dict so that we can find the respective token again
+                    for tensor in layer_embeddings[1:-1]:
+                        lookup_embeddings.append(tensor.numpy())
+
+                # if mean is selected, it returns the average embedding over all layers,
+                # shape should be (nr of tokens x 768)
+                elif self.layers == "mean":
+                    layer_embeddings = torch.mean(embeddings, dim=1)
+                    for tensor in layer_embeddings[1:-1]:
+                        lookup_embeddings.append(tensor.numpy())
+
+                # if max_pool is selected, the maximum value of all layers is selected
+                # shape should be (nr of tokens x 1 x 768)
+                elif self.layers == "max":
+                    layer_embeddings,_ = torch.max(embeddings, dim=1)
+                    for tensor in layer_embeddings[1:-1]:
+                        lookup_embeddings.append(tensor.numpy())
+
+                # if sum is selected, the embeddings are summed over all layers
+                elif self.layers == "sum":
+                    #layer_embeddings = summing(embeddings)
+                    layer_embeddings = torch.sum(embeddings, dim=1)
+                    for tensor in layer_embeddings[1:-1]:
+                        lookup_embeddings.append(tensor.numpy())
+
+                #elif self.layers == "CLS":
+                 #   layer_embeddings =
+
+                bert_dict[i][j]["layer_embedding"] = layer_embeddings
+
         return bert_dict, lookup_tokens, lookup_embeddings
 
 def mark_and_tokenize(comment, tokenizer):
@@ -123,50 +140,6 @@ def concatenate(embeddings):
         token_vecs_cat.append(cat_vec)
     return token_vecs_cat
 
-def summing(embeddings):
-    # Stores the token vectors, with shape [22 x 768]
-    token_vecs_sum = []
-
-    # `token_embeddings` is a [22 x 12 x 768] tensor.
-
-    # For each token in the sentence...
-    for token in embeddings:
-
-        # `token` is a [12 x 768] tensor
-
-        # Sum the vectors from the last four layers.
-        sum_vec = torch.sum(token[-4:], dim=0)
-
-        # Use `sum_vec` to represent `token`.
-        token_vecs_sum.append(sum_vec)
-    return token_vecs_sum
-
-def layer_1_embeddings(embeddings):
-    token_vecs = embeddings[:,0]
-    return token_vecs
-
-def sentence_encoding(embeddings):
-    # embeddings has shape [53 x 12 x 768]
-
-    # `token_vecs` is a tensor with shape [53 x 768]
-    token_vecs = embeddings[:, 0]
-    #print(token_vecs.shape())
-
-    # Calculate the average of all 53 token vectors.
-    sentence_embedding = torch.mean(token_vecs, dim=0)
-    return sentence_embedding
-
-    # print(i)
-    # take only the layer 1 embeddings for the tokens, not for CLS and SEP
-    embeddings = bert_dictionary[topic][i]["emb_sum"][1:-1]
-    # print(embeddings)
-    # print(type(embeddings))
-    # calculate average embedding
-    average = torch.mean(embeddings, dim=0)
-    avg_sen.append(average)
-    # torch.mean(torch.stack(embeddings), dim=0)
-    # print(average)
-
 
 # take average of all vectors and find word closest to it (mit cos similarity?)
 
@@ -177,7 +150,7 @@ def find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings):
         for i in bert_dictionary[topic].keys():
             #print(i)
             # take only the layer 1 embeddings for the tokens, not for CLS and SEP
-            embeddings = bert_dictionary[topic][i]["emb_l1"][1:-1]
+            embeddings = bert_dictionary[topic][i]["layer_embedding"][1:-1]
             #print(embeddings)
             #print(type(embeddings))
             # calculate average embedding
