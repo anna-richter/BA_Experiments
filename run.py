@@ -9,8 +9,10 @@ import models
 import writers
 import cleaning
 from cleaning import Cleaner
+import itertools
 import formatting
 from formatting import Formatter
+from time import time
 
 # converts string (name of writer) to actual writer object
 def get_writer(writer_name: str, **kwargs) -> Abstractwriter:
@@ -36,7 +38,12 @@ if __name__ == "__main__":
     config = json.load(open(config_path, 'r'))
     print("running configuration: ", config)
 
-    # FORLOOP HERE
+#    for data, model, cleaning in itertools.product(config["data"], config["model"], config["cleaning"]):
+#        if model == "BERT":
+#            for layers in config["layers"]:
+
+#        save_path = f"./{data}/{model}/{cleaning}"
+ #       ./data/model/cleaning/layers.csv
 
     # get the writer class from the name in config
     writer_class = get_writer(config['writer'])
@@ -46,7 +53,6 @@ if __name__ == "__main__":
     model = get_model(config["model"])
     cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]), model, config["model"])
     cleandata = cleaner.clean_data()
-
     experimentor = Experimentor(model, config["model"], cleandata, config["data"], writer, config["layers"])
     experimentor.run_experiment()
     #print(cleandata)

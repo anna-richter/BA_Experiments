@@ -2,6 +2,12 @@ BERT:
 - verschiedene Layer Optionen einbauen
 - Layer 1 bis 12, sentence embeddings? Concat und summing?
 
+Automatisierung:
+wie schaffe ich es dass nur bei BERT auf Layers geachtet wird? Weil bei Fasttext sollte das egal sein sonst
+wird es viele unnötige Experimente geben... 2 forschleifen ineinander
+Zeit logging?! start = time(), end = time() total= end-start
+
+tf-idf weighted methode zur berechnung der titles siehe Study project
 
 code überall kommentieren
 
