@@ -5,12 +5,13 @@ from bert_experiments import find_most_similar
 from transformers import RobertaTokenizer, RobertaModel
 # this class defines the experimental flow, which methods need to be called in which order etc
 class Experimentor:
-    def __init__(self, model, model_name, data, data_name, writer):
+    def __init__(self, model, model_name, data, data_name, writer, layers):
         self.model = model
         self.model_name = model_name
         self.data = data
         self.data_name = data_name
         self.writer = writer
+        self.layers = layers
 
     def run_experiment(self):
         if self.model_name in ["Fasttext", "Fasttext_gensim" "Word2Vec" ,"GloVe"]:
@@ -20,7 +21,7 @@ class Experimentor:
             self.writer.save()
 
         elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
-            experimentor = Bert_experimentor(self.data, self.model, self.model_name)
+            experimentor = Bert_experimentor(self.data, self.model, self.model_name, self.layers)
             bert_dictionary, look_up_tokens, look_up_embeddings = experimentor.get_bert_dict()
             titles = find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings)
             self.writer.write_list(titles)

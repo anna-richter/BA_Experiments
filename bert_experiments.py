@@ -10,13 +10,14 @@ from scipy.spatial.distance import cdist
 
 # OPTIONAL: if you want to have more information on what's happening, activate the logger as follows
 import logging
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 class Bert_experimentor:
-    def __init__(self, data: pd.DataFrame, model: object, model_name:str):
+    def __init__(self, data: pd.DataFrame, model: object, model_name:str, layers):
         self.data = data
         self.model = model
         self.model_name = model_name
+        self.layers = layers
         if self.model_name == "ROBERTA":
             self.tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
         elif self.model_name == "BERT":
@@ -33,16 +34,20 @@ class Bert_experimentor:
             for j in range(len(self.data[i])):
                 bert_dict[i][j] = {}
                 bert_dict[i][j]["text"] = self.data[i][j]
-                one = mark_and_tokenize(str(self.data[i][j]), self.tokenizer)
-                bert_dict[i][j]["tokens"] = one
+                tokens = mark_and_tokenize(str(self.data[i][j]), self.tokenizer)
+                bert_dict[i][j]["tokens"] = tokens
                 # we only want to add the words to the look up table, not the CLS and the SEP markers
-                words_only = one[1:-1]
+                words_only = tokens[1:-1]
                 for word in words_only:
                     lookup_tokens.append(word)
-                two = convert_to_ids(one, self.tokenizer)
-                three = segments(two)
-                token_tensor, segment_tensors = convert_to_torch(two, three)
+                ids = convert_to_ids(tokens, self.tokenizer)
+                token_tensor, segment_tensors = convert_to_torch(ids, segments(ids))
+
                 embeddings = get_hidden_states(token_tensor, segment_tensors, self.model)
+                layer_embeddings = embeddings[:, int(self.layers)]
+                for tensor in layer_embeddings[1:-1]:
+                    lookup_embeddings.append(tensor.numpy())
+                
                 embeddings_l1 = layer_1_embeddings(embeddings)
                 for tensor in embeddings_l1[1:-1]:
                     lookup_embeddings.append(tensor.numpy())
@@ -172,12 +177,12 @@ def find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings):
         for i in bert_dictionary[topic].keys():
             #print(i)
             # take only the layer 1 embeddings for the tokens, not for CLS and SEP
-            embeddings = bert_dictionary[topic][i]["emb_sum"][1:-1]
+            embeddings = bert_dictionary[topic][i]["emb_l1"][1:-1]
             #print(embeddings)
             #print(type(embeddings))
             # calculate average embedding
-            #average = torch.mean(embeddings, dim=0)
-            average = torch.mean(torch.stack(embeddings), dim=0)
+            average = torch.mean(embeddings, dim=0)
+            #average = torch.mean(torch.stack(embeddings), dim=0)
             avg_sen.append(average)
             #torch.mean(torch.stack(embeddings), dim=0)
             #print(average)

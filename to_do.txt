@@ -1,11 +1,22 @@
+BERT:
+- verschiedene Layer Optionen einbauen
+- Layer 1 bis 12, sentence embeddings? Concat und summing?
 
 
 code überall kommentieren
 
-Roberta und Albert auch
+Roberta und AlBERt: optional falls am Ende noch Zeit ist!!!!!!!
+-Vokabular for cleaning
+-Get Embeddings
 
 Ergebnisse auswerten
 
+
+
+Fragen: bei BERT und co: einmal embeddings berechnen für alle Layer? und dann nur nachschlagen welche ich
+brauch für jeweiliges Experiment?
+Oder immer nur das berechnen was ich für Experiment brauche?
+Switch Case Schaltung!!! Gibt es nicht...
 
 
 
