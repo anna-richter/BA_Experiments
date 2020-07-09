@@ -180,9 +180,9 @@ def find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings):
                 break
 
         most_similar_dict[topic] = []
-        print("5 top similar words for:", topic, "\n")
+        #print("5 top similar words for:", topic, "\n")
         for i, j in zip(top_5_words, top_5_indices):
             most_similar_dict[topic].append((i, distances[j]))
-            print("word: ", i, "\t", "similarity: ", distances[j])
-        print("\n")
+            #print("word: ", i, "\t", "similarity: ", distances[j])
+        #print("\n")
     return most_similar_dict

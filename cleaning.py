@@ -86,10 +86,15 @@ def remove_stopwords(surveyText):
     return [w for w in surveyText if w not in stopwordList]
 
 def restrict_vocab(surveyText, vocabulary):
+    counter = 0
+    result = []
     for w in surveyText:
         if w not in vocabulary:
-            print("excluded ", w)
-    return [w for w in surveyText if w in vocabulary]
+            counter+=1
+            #print("excluded ", w)
+        else:
+            result.append(w)
+    return result#[w for w in surveyText if w in vocabulary]
 
 def remove_anonymized(surveyText):
     return [w for w in surveyText if w != "anonymized"]
@@ -124,9 +129,7 @@ def vocab(txt):
 
 def remove_vocab(txt, vocabulary):
     cleanedTxt = txt.apply(lambda x: word_tokenize(x.lower()))
-    print(len(cleanedTxt))
     cleanedTxt = cleanedTxt.apply(lambda x: restrict_vocab(x,vocabulary))
-    print(len(cleanedTxt))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
     for i in range(len(cleanedTxt)):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])

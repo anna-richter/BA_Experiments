@@ -19,6 +19,7 @@ class Experimentor:
             print(titles)
             self.writer.write_list(titles)
             self.writer.save()
+            return titles
 
         elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
             experimentor = Bert_experimentor(self.data, self.model, self.model_name, self.layers)
@@ -26,9 +27,11 @@ class Experimentor:
             titles = find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings)
             self.writer.write_list(titles)
             self.writer.save()
+            return titles
 
         else:
             print("fehler, kein Model angegeben")
+            return None
 
 def word_embeddings_experiment(data, data_name, model, writer):
     if data_name == "keywords":

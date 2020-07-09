@@ -1,10 +1,7 @@
-{
-  "writer": "CSVwriter",
-  "save_path": "./comments/basic_stopwords_vocab/Mull5.csv",
-  "data": "comments",
-  "cleaning": ["basic","stopwords","vocab"],
-  "model": "BERT",
-  "experiment_mode": "cosine",
-  "layers": "sum"
 
+{
+  "data": ["comments"],
+  "cleaning": [["basic","stopwords","vocab"]],
+  "model": ["BERT"],
+  "layers": ["1"]
 }
