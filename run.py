@@ -1,6 +1,6 @@
 # this function actually runs the whole thing i.e. "start-button"
 from experimentor import Experimentor
-from writers import Printwriter, Abstractwriter
+from writers import Printwriter, Abstractwriter, CSVwriter
 import datasets
 import json
 import argparse
@@ -33,26 +33,42 @@ if __name__ == "__main__":
     #parser = argparse.ArgumentParser()
     #parser.add_argument('-c', dest='config')
     #parser.parse_args()
-
-    config_path = './config/test.json'
+    results = {"data": [],"cleaning": [],"model": [],"layers": [], "runtime": [],
+               "nr_of_words_excluded":[], "top_5": []}
+    config_path = './config/experimente.json'
     config = json.load(open(config_path, 'r'))
-    print("running configuration: ", config)
 
-#    for data, model, cleaning in itertools.product(config["data"], config["model"], config["cleaning"]):
-#        if model == "BERT":
-#            for layers in config["layers"]:
+    for data_name, model_name, cleaning in itertools.product(config["data"], config["model"],
+                                                             config["cleaning"]):
+        save_path = f"./{data}/{model}/"
+        for item in cleaning:
+            save_path += '_' + item.__name__
+        if model == "BERT":
+            for layer in config["layers"]:
+                save_path += f"/{layer}.csv"
+                print("running configuration: ", save_path)
+                start = time()
+                writer = CSVwriter(save_path)
+                data = get_data(data_name)
+                model = get_model(model_name)
+                cleaner = Cleaner(data_name, data, get_cleaners(cleaning), model, model_name)
+                cleandata = cleaner.clean_data()
+                experimentor = Experimentor(model, model_name, cleandata, data_name, writer, layer)
+                experimentor.run_experiment()
+                end = time()
+                runtime = end-start
 
-#        save_path = f"./{data}/{model}/{cleaning}"
- #       ./data/model/cleaning/layers.csv
-
-    # get the writer class from the name in config
-    writer_class = get_writer(config['writer'])
-    # make an instance of this writer with the path given in config
-    writer = writer_class(config['save_path'])
-    data = get_data(config["data"])
-    model = get_model(config["model"])
-    cleaner = Cleaner(config["data"], data, get_cleaners(config["cleaning"]), model, config["model"])
-    cleandata = cleaner.clean_data()
-    experimentor = Experimentor(model, config["model"], cleandata, config["data"], writer, config["layers"])
-    experimentor.run_experiment()
-    #print(cleandata)
+        else:
+            save_path += ".csv"
+            print("running configuration: ", save_path)
+            start = time()
+            layer = None
+            writer = CSVwriter(save_path)
+            data = get_data(data_name)
+            model = get_model(model_name)
+            cleaner = Cleaner(data_name, data, get_cleaners(cleaning), model, model_name)
+            cleandata = cleaner.clean_data()
+            experimentor = Experimentor(model, model_name, cleandata, data_name, writer, layer)
+            experimentor.run_experiment()
+            end = time()
+            runtime = end - start
