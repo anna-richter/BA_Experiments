@@ -14,7 +14,7 @@ class Experimentor:
         self.layers = layers
 
     def run_experiment(self):
-        if self.model_name in ["Fasttext", "Fasttext_gensim" "Word2Vec" ,"GloVe"]:
+        if self.model_name in ["Fasttext", "Fasttext_gensim", "Word2Vec" ,"GloVe"]:
             titles = word_embeddings_experiment(self.data, self.data_name, self.model, self.writer)
             print(titles)
             self.writer.write_list(titles)
@@ -44,9 +44,9 @@ def word_embeddings_experiment(data, data_name, model, writer):
                 keyword_titles[topic] = zwischenergebnis
             except KeyError as e:
                 # Ignore the word if it does not exist.
-                print("fehler in " + topic)
-                print(data[topic].values[0].split(" "))
-                print(e)
+                #print("fehler in " + topic)
+                #print(data[topic].values[0].split(" "))
+                #print(e)
                 pass
 
         #print(keyword_titles)
@@ -56,6 +56,7 @@ def word_embeddings_experiment(data, data_name, model, writer):
     elif data_name == "comments":
         comment_titles = {}
         for topic in data.columns:
+            data[topic].dropna(inplace = True)
             comment_titles[topic] = []
             for comment in range(len(data[topic])):
                 #print(data[topic][comment].split(" "))
@@ -65,9 +66,9 @@ def word_embeddings_experiment(data, data_name, model, writer):
                     comment_titles[topic].append(zwischenergebnis)
                 except KeyError as e:
                 # Ignore the word if it does not exist.
-                    print("fehler in " + topic)
-                    print(data[topic][comment].split(" "))
-                    print(e)
+                    #print("fehler in " + topic)
+                    #print(data[topic][comment].split(" "))
+                    #print(e)
                     pass
 
         #print(comment_titles)

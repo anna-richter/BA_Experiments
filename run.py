@@ -32,6 +32,7 @@ if __name__ == "__main__":
     #parser.add_argument('-c', dest='config')
     #parser.parse_args()
     results = {"data": [], "model": [], "cleaning": [],"layers": [], "runtime": [], "top_5": []}
+    #config_path = './config/test.json'
     config_path = './config/experimente.json'
     config = json.load(open(config_path, 'r'))
 
