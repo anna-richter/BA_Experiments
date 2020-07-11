@@ -3,6 +3,5 @@
 *.xml
 *.pyc
 *.csv
-*.csv
 testvenv/
 
