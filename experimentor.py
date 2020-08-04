@@ -21,7 +21,7 @@ class Experimentor:
             self.writer.save()
             return titles
 
-        elif self.model_name in ["BERT", "ROBERTA", "ALBERT"]:
+        elif self.model_name in ["BERT"]:
             experimentor = Bert_experimentor(self.data, self.model, self.model_name, self.layers)
             bert_dictionary, look_up_tokens, look_up_embeddings = experimentor.get_bert_dict()
             titles = find_most_similar(bert_dictionary, look_up_tokens, look_up_embeddings)

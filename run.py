@@ -33,7 +33,7 @@ if __name__ == "__main__":
     #parser.parse_args()
     results = {"data": [], "model": [], "cleaning": [],"layers": [], "runtime": [], "top_5": []}
     #config_path = './config/test.json'
-    config_path = './config/experimente.json'
+    config_path = './config/experiments.json'
     config = json.load(open(config_path, 'r'))
 
     for i, (data_name, model_name, cleaning_items) in enumerate(itertools.product(config["data"], config["model"],

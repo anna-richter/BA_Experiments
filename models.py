@@ -28,11 +28,3 @@ def BERT():
     model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states=True)
     model.eval()
     return model
-
-def ROBERTA():
-    model = RobertaModel.from_pretrained('roberta-base')
-    model.eval()
-    return model
-
-def ALBERT():
-    pass

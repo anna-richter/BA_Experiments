@@ -64,9 +64,6 @@ class Cleaner:
                 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
                 # muss das hier list(..) sein??
                 vocabulary = tokenizer.vocab.keys()
-            elif self.model_name == "ROBERTA":
-                tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
-                vocabulary = tokenizer.vocab()
             for topic in cleaned_data.columns:
                 cleaned_data[topic].dropna(inplace=True)
                 cleaned_data[topic] = remove_vocab(cleaned_data[topic], vocabulary)

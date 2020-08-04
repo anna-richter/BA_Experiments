@@ -18,9 +18,7 @@ class Bert_experimentor:
         self.model = model
         self.model_name = model_name
         self.layers = layers
-        if self.model_name == "ROBERTA":
-            self.tokenizer = RobertaTokenizer.from_pretrained('roberta-base')
-        elif self.model_name == "BERT":
+        if self.model_name == "BERT":
             self.tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 
