@@ -37,19 +37,15 @@ def word_embeddings_experiment(data, data_name, model, writer):
     if data_name == "keywords":
         keyword_titles = {}
         for topic in data.columns:
-            #print(data[topic].values[0].split(" "))
             try:
                 zwischenergebnis = model.most_similar_cosmul(positive= data[topic].values[0].split(" "),
                                                              negative=None, topn=5)
                 keyword_titles[topic] = zwischenergebnis
             except KeyError as e:
                 # Ignore the word if it does not exist.
-                #print("fehler in " + topic)
-                #print(data[topic].values[0].split(" "))
-                #print(e)
+
                 pass
 
-        #print(keyword_titles)
         return keyword_titles
 
 
@@ -59,20 +55,15 @@ def word_embeddings_experiment(data, data_name, model, writer):
             data[topic].dropna(inplace = True)
             comment_titles[topic] = []
             for comment in range(len(data[topic])):
-                #print(data[topic][comment].split(" "))
                 try:
                     zwischenergebnis = model.most_similar_cosmul(positive= data[topic][comment].split(" "),
                                                          negative=None, topn=5)
                     comment_titles[topic].append(zwischenergebnis)
                 except KeyError as e:
                 # Ignore the word if it does not exist.
-                    #print("fehler in " + topic)
-                    #print(data[topic][comment].split(" "))
-                    #print(e)
                     pass
 
-        #print(comment_titles)
-        # nehme Liste der 5 ähnlichsten Worte für jedes Kommentar einer Topic und füge diese in eine Liste
+        # take list of 5 most similar words or each comment of the topic and add them to list
         titles = {}
         for topic in comment_titles.keys():
             wortliste = []
@@ -81,15 +72,12 @@ def word_embeddings_experiment(data, data_name, model, writer):
                     wortliste.append(word[0])
             titles[topic] = wortliste
 
-        # berechne most similar words pro Topic
+        # calculate most similar words for list of most similar words for topics
         titles_final = {}
         for topic in titles.keys():
-            # comments[topic].dropna(inplace = True)
             zwischenergebnisse = []
             zwischenergebnisse.append(model.most_similar_cosmul(positive=titles[topic], negative=None, topn=5))
             titles_final[topic] = zwischenergebnisse
-            #print(topic, " done")
-            #print(zwischenergebnisse)
 
-        #print(titles_final)
+
         return(titles_final)

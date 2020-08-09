@@ -1,22 +1,12 @@
-from abc import ABC, abstractmethod
 import pandas as pd
-import numpy as np
-import pickle
 import nltk
 from bs4 import BeautifulSoup
-from html.parser import HTMLParser
 import string
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk.tokenize import WhitespaceTokenizer
-from nltk.stem import WordNetLemmatizer
-from nltk.stem.porter import PorterStemmer
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from pytorch_pretrained_bert import BertTokenizer, BertModel, BertForMaskedLM
 from transformers import BertModel, BertTokenizer
-from transformers import RobertaTokenizer, RobertaModel
-from transformers import AutoTokenizer, AutoModelWithLMHead
-#from porter2stemmer import Porter2Stemmer
 import re
 import os
 
@@ -100,14 +90,11 @@ def remove_whitespace(surveyText):
     return [w for w in surveyText if w != " "]
 
 def basic(txt):
-    #cleanedTxt = txt.apply(lambda x: remove_html(x))
     cleanedTxt = txt.apply(lambda x: remove_punctuation(x))
     cleanedTxt = cleanedTxt.apply(lambda x: word_tokenize(x.lower()))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_anonymized(x))
     cleanedTxt = cleanedTxt.apply(lambda x: re.sub(r'[^a-zA-Z0-9]', ' ', str(x)))
     cleanedTxt = cleanedTxt.apply(lambda x: remove_whitespace(x))
-    #w_tokenizer = WhitespaceTokenizer()
-    #cleanedTxt = cleanedTxt.apply(lambda x: w_tokenizer.tokenize(x))
     for i in range(len(cleanedTxt)):
        cleanedTxt[i] = TreebankWordDetokenizer().detokenize(cleanedTxt[i])
     return cleanedTxt

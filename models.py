@@ -1,8 +1,6 @@
 import gensim.downloader as api
 from gensim.models import KeyedVectors
-from transformers import BertModel, BertTokenizer
-from transformers import AutoTokenizer, AutoModelWithLMHead
-from transformers import RobertaTokenizer, RobertaModel
+from transformers import BertModel
 
 def test():
     return "test_model"

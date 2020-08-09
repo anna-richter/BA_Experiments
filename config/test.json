@@ -1,7 +1,7 @@
 
 {
   "data": ["comments"],
-  "cleaning": [["basic"]],
-  "model": ["Fasttext"],
+  "cleaning": [["basic", "vocab"]],
+  "model": ["BERT"],
   "layers": ["1"]
 }
